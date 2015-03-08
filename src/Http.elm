@@ -5,7 +5,7 @@ module Http
     , Data, stringData, blobData
     , Settings, defaultSettings
     , Response, Value(..)
-    , Error
+    , Error(..), RawError(..)
     ) where
 {-|
 
