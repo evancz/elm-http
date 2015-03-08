@@ -22,11 +22,11 @@ module Http
 @docs Response, Value, fromJson, RawError
 -}
 
-import Basics exposing ((&&), (<=), (<))
 import Dict exposing (Dict)
 import JavaScript.Decode as JavaScript
 import Native.Http
 import Promise exposing (Promise, andThen, mapError, succeed, fail)
+import Time exposing (Time)
 
 
 type Blob = TODO_impliment_blob_in_another_library
