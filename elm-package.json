@@ -1,0 +1,16 @@
+{
+    "version": "1.0.0",
+    "summary": "Basic foundation for HTTP communication",
+    "repository": "http://github.com/evancz/elm-http.git",
+    "license": "BSD3",
+    "source-directories": [
+        "src"
+    ],
+    "exposed-modules": [
+        "Http"
+    ],
+    "native-modules": true,
+    "dependencies": {
+        "elm-lang/core": "2.0.0 <= v < 3.0.0"
+    }
+}
