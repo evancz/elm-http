@@ -1,5 +1,6 @@
 module Http
     ( get, post, send
+    , url, uriEncode, uriDecode
     , Request
     , Body, empty, string, multipart
     , Data, stringData, blobData
@@ -8,6 +9,9 @@ module Http
     , Error(..), RawError(..)
     ) where
 {-|
+
+# Encoding and Decoding
+@docs url, uriEncode, uriDecode
 
 # Fetching JSON
 @docs get, post, Error
@@ -26,6 +30,7 @@ import Dict exposing (Dict)
 import JavaScript.Decode as JavaScript
 import Native.Http
 import Promise exposing (Promise, andThen, mapError, succeed, fail)
+import String
 import Time exposing (Time)
 
 
@@ -34,6 +39,49 @@ type File = TODO_impliment_file_in_another_library
 
 
 -- REQUESTS
+
+{-| Create a properly encoded URL. First argument is the domain, which is
+assumed to be properly encoded already. The second is a list of all the
+key/value pairs needed for the [query string][qs]. Both the keys and values
+will be appropriately encoded, so they can contain spaces, ampersands, etc.
+
+[qs]: http://en.wikipedia.org/wiki/Query_string
+
+    url "http://example.com/users" [ ("name", "john doe"), ("age", "30") ]
+    -- http://example.com/users?name=john+doe&age=30
+-}
+url : String -> List (String,String) -> String
+url domain args =
+  case args of
+    [] -> domain
+    _ -> domain ++ "?" ++ String.join "&" (List.map queryPair args)
+
+
+queryPair : (String,String) -> String
+queryPair (key,value) =
+  queryEscape key ++ "=" ++ queryEscape value
+
+
+queryEscape : String -> String
+queryEscape string =
+  String.join "+" (String.split "%20" (uriEncode string))
+
+
+{-| Encode a string to be placed in any part of a URI. Same behavior as
+JavaScript's `encodeURIComponent` function.
+-}
+uriEncode : String -> String
+uriEncode =
+  Native.Http.uriEncode
+
+
+{-| Decode a URI string. Same behavior as JavaScript's `decodeURIComponent`
+function.
+-}
+uriDecode : String -> String
+uriDecode =
+  Native.Http.uriDecode
+
 
 {-| Fully specify the request you want to send. For example, if you want to
 send a request between domains (CORS request) you will need to specify some
@@ -47,7 +95,7 @@ headers manually.
             , ("Access-Control-Request-Method", "POST")
             , ("Access-Control-Request-Headers", "X-Custom-Header")
             ]
-        , url = "http://www.example.com/hats"
+        , url = "http://example.com/hats"
         , body = empty
         }
 -}
@@ -83,7 +131,7 @@ JSON data to a server that does not belong in the URL.
     coolestHats =
         post
           (JS.list JS.string)
-          "http://www.example.com/hats"
+          "http://example.com/hats"
           (string """{ "sortBy": "coolness", "take": 10 }""")
 -}
 string : String -> Body
@@ -277,7 +325,7 @@ send =
 
 -- HIGH-LEVEL REQUESTS
 
-{-| Send a GET request to the given url. You also specify how to decode the
+{-| Send a GET request to the given URL. You also specify how to decode the
 response.
 
     import JavaScript.Decode (list, string)
@@ -299,7 +347,7 @@ get decoder url =
       fromJson decoder (send defaultSettings request)
 
 
-{-| Send a POST send to the given url, carrying the given string as the body.
+{-| Send a POST send to the given URL, carrying the given string as the body.
 You also specify how to decode the response.
 
     import JavaScript.Decode (list, string)

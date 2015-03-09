@@ -39,7 +39,6 @@ Elm.Native.Http.make = function(localRuntime) {
 							loaded: event.loaded,
 							total: event.total
 						});
-					};
 					var promise = settings.onProgress._0(progress);
 					Promise.spawn(promise);
 				});
@@ -154,8 +153,20 @@ Elm.Native.Http.make = function(localRuntime) {
 	}
 
 
+	function uriEncode(string)
+	{
+		return encodeURIComponent(string);
+	}
+
+	function uriDecode(string)
+	{
+		return decodeURIComponent(string);
+	}
+
 	return localRuntime.Native.Http.values = {
 		send: F2(send),
-		multipart: multipart
+		multipart: multipart,
+		uriEncode: uriEncode,
+		uriDecode: uriDecode
 	};
 };
