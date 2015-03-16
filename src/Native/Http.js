@@ -11,20 +11,20 @@ Elm.Native.Http.make = function(localRuntime) {
 	var Dict = Elm.Dict.make(localRuntime);
 	var List = Elm.List.make(localRuntime);
 	var Maybe = Elm.Maybe.make(localRuntime);
-	var Command = Elm.Native.Command.make(localRuntime);
+	var Task = Elm.Native.Task.make(localRuntime);
 
 
 	function send(settings, request)
 	{
-		return Command.asyncFunction(function(callback) {
+		return Task.asyncFunction(function(callback) {
 			var req = new XMLHttpRequest();
 
 			// start
 			if (settings.onStart.ctor === 'Just')
 			{
 				req.addEventListener('loadStart', function() {
-					var command = settings.onStart._0;
-					Command.spawn(command);
+					var task = settings.onStart._0;
+					Task.spawn(task);
 				});
 			}
 
@@ -39,22 +39,22 @@ Elm.Native.Http.make = function(localRuntime) {
 							loaded: event.loaded,
 							total: event.total
 						});
-					var command = settings.onProgress._0(progress);
-					Command.spawn(command);
+					var task = settings.onProgress._0(progress);
+					Task.spawn(task);
 				});
 			}
 
 			// end
 			req.addEventListener('error', function() {
-				return callback(Command.fail({ ctor: 'RawNetworkError' }));
+				return callback(Task.fail({ ctor: 'RawNetworkError' }));
 			});
 
 			req.addEventListener('timeout', function() {
-				return callback(Command.fail({ ctor: 'RawTimeout' }));
+				return callback(Task.fail({ ctor: 'RawTimeout' }));
 			});
 
 			req.addEventListener('load', function() {
-				return callback(Command.succeed(toResponse(req)));
+				return callback(Task.succeed(toResponse(req)));
 			});
 
 			req.open(request.verb, request.url, true);

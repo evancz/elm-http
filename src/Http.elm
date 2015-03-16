@@ -29,7 +29,7 @@ module Http
 import Dict exposing (Dict)
 import JavaScript.Decode as JavaScript
 import Native.Http
-import Command exposing (Command, andThen, mapError, succeed, fail)
+import Task exposing (Task, andThen, mapError, succeed, fail)
 import String
 import Time exposing (Time)
 
@@ -127,7 +127,7 @@ JSON data to a server that does not belong in the URL.
 
     import JavaScript.Decode as JS
 
-    coolestHats : Command Error (List String)
+    coolestHats : Task Error (List String)
     coolestHats =
         post
           (JS.list JS.string)
@@ -216,8 +216,8 @@ fileData =
 -}
 type alias Settings =
     { timeout : Time
-    , onStart : Maybe (Command () ())
-    , onProgress : Maybe (Maybe { loaded : Int, total : Int } -> Command () ())
+    , onStart : Maybe (Task () ())
+    , onProgress : Maybe (Maybe { loaded : Int, total : Int } -> Task () ())
     , desiredResponseType : Maybe String
     }
 
@@ -309,7 +309,7 @@ type Error
 configure things like timeouts and progress monitoring. The `Request` argument
 defines all the information that will actually be sent along to a server.
 
-    crossOriginGet : String -> String -> Command Error Response
+    crossOriginGet : String -> String -> Task Error Response
     crossOriginGet origin url =
       send defaultSettings
         { verb = "GET"
@@ -318,7 +318,7 @@ defines all the information that will actually be sent along to a server.
         , body = empty
         }
 -}
-send : Settings -> Request -> Command RawError Response
+send : Settings -> Request -> Task RawError Response
 send =
   Native.Http.send
 
@@ -330,12 +330,12 @@ response.
 
     import JavaScript.Decode (list, string)
 
-    hats : Command Error (List String)
+    hats : Task Error (List String)
     hats =
         get (list string) "http://example.com/hat-categories.json"
 
 -}
-get : JavaScript.Decoder value -> String -> Command Error value
+get : JavaScript.Decoder value -> String -> Task Error value
 get decoder url =
   let request =
         { verb = "GET"
@@ -352,12 +352,12 @@ You also specify how to decode the response.
 
     import JavaScript.Decode (list, string)
 
-    hats : Command Error (List String)
+    hats : Task Error (List String)
     hats =
         post (list string) "http://example.com/hat-categories.json" empty
 
 -}
-post : JavaScript.Decoder value -> String -> Body -> Command Error value
+post : JavaScript.Decoder value -> String -> Body -> Task Error value
 post decoder url body =
   let request =
         { verb = "POST"
@@ -381,13 +381,13 @@ Given a `Response` this function will:
 
 Assuming all these steps succeed, you will get an Elm value as the result!
 -}
-fromJson : JavaScript.Decoder a -> Command RawError Response -> Command Error a
+fromJson : JavaScript.Decoder a -> Task RawError Response -> Task Error a
 fromJson decoder response =
   mapError promoteError response
     `andThen` handleResponse decoder
 
 
-handleResponse : JavaScript.Decoder a -> Response -> Command Error a
+handleResponse : JavaScript.Decoder a -> Response -> Task Error a
 handleResponse decoder response =
   case 200 <= response.status && response.status < 300 of
     False ->
