@@ -10,8 +10,8 @@ of the underlying functionality.
 
 ```elm
 import Http
-import JavaScript.Decoder as JS exposing ((:=))
-import Promise exposing (..)
+import Json.Decoder as Json exposing ((:=))
+import Task exposing (..)
 
 
 lookupZipCode : String -> Promise Http.Error (List String)
@@ -19,12 +19,12 @@ lookupZipCode query =
     Http.get places ("http://api.zippopotam.us/us/" ++ query)
 
 
-places : JS.Decoder (List String)
+places : Json.Decoder (List String)
 places =
   let place =
-        JS.object2 (\city state -> city ++ ", " ++ state)
-          ("place name" := JS.string)
-          ("state" := JS.string)
+        Json.object2 (\city state -> city ++ ", " ++ state)
+          ("place name" := Json.string)
+          ("state" := Json.string)
   in
-      "places" := JS.list place
+      "places" := Json.list place
 ```
