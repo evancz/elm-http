@@ -325,6 +325,27 @@ send =
 
 -- HIGH-LEVEL REQUESTS
 
+{-| Send a GET request to the given URL. You will get the entire response as a
+string.
+
+    hats : Task Error String
+    hats =
+        getString "http://example.com/hat-categories.markdown"
+
+-}
+getString : String -> Task Error String
+getString url =
+  let request =
+        { verb = "GET"
+        , headers = []
+        , url = url
+        , body = empty
+        }
+  in
+      mapError promoteError (send defaultSettings request)
+        `andThen` handleResponse succeed
+
+
 {-| Send a GET request to the given URL. You also specify how to decode the
 response.
 
@@ -383,25 +404,25 @@ Assuming all these steps succeed, you will get an Elm value as the result!
 -}
 fromJson : Json.Decoder a -> Task RawError Response -> Task Error a
 fromJson decoder response =
-  mapError promoteError response
-    `andThen` handleResponse decoder
+  let decode str =
+        case Json.decodeString decoder str of
+          Ok v -> succeed v
+          Err msg -> fail (UnexpectedPayload msg)
+  in
+      mapError promoteError response
+        `andThen` handleResponse decode
 
 
-handleResponse : Json.Decoder a -> Response -> Task Error a
-handleResponse decoder response =
+handleResponse : (String -> Task Error a) -> Response -> Task Error a
+handleResponse handle response =
   case 200 <= response.status && response.status < 300 of
     False ->
         fail (BadResponse response.status response.statusText)
 
     True ->
         case response.value of
-          Text rawJson ->
-              case Json.decodeString decoder rawJson of
-                Ok v -> succeed v
-                Err msg -> fail (UnexpectedPayload msg)
-
-          _ ->
-              fail (UnexpectedPayload "Response body is a blob, expecting a string.")
+          Text str -> handle str
+          _ -> fail (UnexpectedPayload "Response body is a blob, expecting a string.")
 
 
 promoteError : RawError -> Error
