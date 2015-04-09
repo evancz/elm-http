@@ -244,13 +244,13 @@ defaultSettings =
 {-| All the details of the response. There are many weird facts about
 responses which include:
 
-    * The `status` may be 0 in the case that you load something from `file://`
-    * You cannot handle redirects yourself, they will all be followed
-      automatically. If you want to know if you have gone through one or more
-      redirect, the `url` field will let you know who sent you the response, so
-      you will know if it does not match the URL you requested.
-    * You are allowed to have duplicate headers, and their values will be
-      combined into a single comma-separated string.
+  * The `status` may be 0 in the case that you load something from `file://`
+  * You cannot handle redirects yourself, they will all be followed
+    automatically. If you want to know if you have gone through one or more
+    redirect, the `url` field will let you know who sent you the response, so
+    you will know if it does not match the URL you requested.
+  * You are allowed to have duplicate headers, and their values will be
+    combined into a single comma-separated string.
 
 We have left these underlying facts about `XMLHttpRequest` as is because one
 goal of this library is to give a low-level enough API that others can build
