@@ -1,5 +1,5 @@
 module Http
-    ( get, post, send
+    ( getString, get, post, send
     , url, uriEncode, uriDecode
     , Request
     , Body, empty, string, multipart
@@ -13,8 +13,8 @@ module Http
 # Encoding and Decoding
 @docs url, uriEncode, uriDecode
 
-# Fetching JSON
-@docs get, post, Error
+# Fetching Raw Strings and JSON
+@docs getString, get, post, Error
 
 # Body Values
 @docs empty, string, multipart, stringData
