@@ -13,7 +13,7 @@ module Http
 # Encoding and Decoding
 @docs url, uriEncode, uriDecode
 
-# Fetching Raw Strings and JSON
+# Fetch Strings and JSON
 @docs getString, get, post, Error
 
 # Body Values
