@@ -20,7 +20,7 @@ module Http
 @docs empty, string, multipart, stringData
 
 # Arbitrariy Requests
-@docs send, Request, Settings, defaultSettigs
+@docs send, Request, Settings, defaultSettings
 
 # Responses
 @docs Response, Value, fromJson, RawError
