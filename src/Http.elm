@@ -27,7 +27,7 @@ module Http
 -}
 
 import Dict exposing (Dict)
-import JavaScript.Decode as JavaScript
+import Json.Decode as Json
 import Native.Http
 import Task exposing (Task, andThen, mapError, succeed, fail)
 import String
@@ -125,7 +125,7 @@ empty =
 {-| Provide a string as the body of the request. Useful if you need to send
 JSON data to a server that does not belong in the URL.
 
-    import JavaScript.Decode as JS
+    import Json.Decode as JS
 
     coolestHats : Task Error (List String)
     coolestHats =
@@ -167,7 +167,7 @@ multipart =
 
 {-| A named chunk of string data.
 
-    import JavaScript.Encode as JS
+    import Json.Encode as JS
 
     body =
       multipart
@@ -328,14 +328,14 @@ send =
 {-| Send a GET request to the given URL. You also specify how to decode the
 response.
 
-    import JavaScript.Decode (list, string)
+    import Json.Decode (list, string)
 
     hats : Task Error (List String)
     hats =
         get (list string) "http://example.com/hat-categories.json"
 
 -}
-get : JavaScript.Decoder value -> String -> Task Error value
+get : Json.Decoder value -> String -> Task Error value
 get decoder url =
   let request =
         { verb = "GET"
@@ -350,14 +350,14 @@ get decoder url =
 {-| Send a POST send to the given URL, carrying the given string as the body.
 You also specify how to decode the response.
 
-    import JavaScript.Decode (list, string)
+    import Json.Decode (list, string)
 
     hats : Task Error (List String)
     hats =
         post (list string) "http://example.com/hat-categories.json" empty
 
 -}
-post : JavaScript.Decoder value -> String -> Body -> Task Error value
+post : Json.Decoder value -> String -> Body -> Task Error value
 post decoder url body =
   let request =
         { verb = "POST"
@@ -381,13 +381,13 @@ Given a `Response` this function will:
 
 Assuming all these steps succeed, you will get an Elm value as the result!
 -}
-fromJson : JavaScript.Decoder a -> Task RawError Response -> Task Error a
+fromJson : Json.Decoder a -> Task RawError Response -> Task Error a
 fromJson decoder response =
   mapError promoteError response
     `andThen` handleResponse decoder
 
 
-handleResponse : JavaScript.Decoder a -> Response -> Task Error a
+handleResponse : Json.Decoder a -> Response -> Task Error a
 handleResponse decoder response =
   case 200 <= response.status && response.status < 300 of
     False ->
@@ -396,7 +396,7 @@ handleResponse decoder response =
     True ->
         case response.value of
           Text rawJson ->
-              case JavaScript.decodeString decoder rawJson of
+              case Json.decodeString decoder rawJson of
                 Ok v -> succeed v
                 Err msg -> fail (UnexpectedPayload msg)
 
