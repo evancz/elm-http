@@ -10,11 +10,11 @@ of the underlying functionality.
 
 ```elm
 import Http
-import Json.Decoder as Json exposing ((:=))
+import Json.Decode as Json exposing ((:=))
 import Task exposing (..)
 
 
-lookupZipCode : String -> Promise Http.Error (List String)
+lookupZipCode : String -> Task Http.Error (List String)
 lookupZipCode query =
     Http.get places ("http://api.zippopotam.us/us/" ++ query)
 

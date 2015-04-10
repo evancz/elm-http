@@ -19,7 +19,7 @@ module Http
 # Body Values
 @docs empty, string, multipart, stringData
 
-# Arbitrariy Requests
+# Arbitrary Requests
 @docs send, Request, Settings, defaultSettings
 
 # Responses
@@ -34,8 +34,8 @@ import String
 import Time exposing (Time)
 
 
-type Blob = TODO_impliment_blob_in_another_library
-type File = TODO_impliment_file_in_another_library
+type Blob = TODO_implement_blob_in_another_library
+type File = TODO_implement_file_in_another_library
 
 
 -- REQUESTS
