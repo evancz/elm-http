@@ -7,6 +7,7 @@ module Http
     , Settings, defaultSettings
     , Response, Value(..)
     , Error(..), RawError(..)
+    , fromJson
     ) where
 {-|
 
