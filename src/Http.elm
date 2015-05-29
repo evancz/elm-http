@@ -220,6 +220,7 @@ type alias Settings =
     , onStart : Maybe (Task () ())
     , onProgress : Maybe (Maybe { loaded : Int, total : Int } -> Task () ())
     , desiredResponseType : Maybe String
+    , withCredentials : Bool
     }
 
 
@@ -237,6 +238,7 @@ defaultSettings =
     , onStart = Nothing
     , onProgress = Nothing
     , desiredResponseType = Nothing
+    , withCredentials = False
     }
 
 
