@@ -369,7 +369,7 @@ get decoder url =
       fromJson decoder (send defaultSettings request)
 
 
-{-| Send a POST send to the given URL, carrying the given string as the body.
+{-| Send a POST request to the given URL, carrying the given string as the body.
 You also specify how to decode the response.
 
     import Json.Decode (list, string)
