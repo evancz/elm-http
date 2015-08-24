@@ -135,7 +135,7 @@ Elm.Native.Http.make = function(localRuntime) {
 		while (dataList.ctor !== '[]')
 		{
 			var data = dataList._0;
-			if (type === 'StringData')
+			if (data.ctor === 'StringData')
 			{
 				formData.append(data._0, data._1);
 			}
