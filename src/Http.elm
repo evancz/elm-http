@@ -41,9 +41,10 @@ type File = TODO_implement_file_in_another_library
 
 -- REQUESTS
 
-{-| Create a properly encoded URL. First argument is the domain, which is
-assumed to be properly encoded already. The second is a list of all the
-key/value pairs needed for the [query string][qs]. Both the keys and values
+{-| Create a properly encoded URL with a [query string][qs]. The first argument is
+the portion of the URL before the query string, which is assumed to be
+properly encoded already. The second argument is a list of all the
+key/value pairs needed for the query string. Both the keys and values
 will be appropriately encoded, so they can contain spaces, ampersands, etc.
 
 [qs]: http://en.wikipedia.org/wiki/Query_string
@@ -52,10 +53,13 @@ will be appropriately encoded, so they can contain spaces, ampersands, etc.
     -- http://example.com/users?name=john+doe&age=30
 -}
 url : String -> List (String,String) -> String
-url domain args =
+url baseUrl args =
   case args of
-    [] -> domain
-    _ -> domain ++ "?" ++ String.join "&" (List.map queryPair args)
+    [] ->
+        baseUrl
+
+    _ ->
+        baseUrl ++ "?" ++ String.join "&" (List.map queryPair args)
 
 
 queryPair : (String,String) -> String
