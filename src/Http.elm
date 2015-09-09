@@ -18,7 +18,7 @@ module Http
 @docs getString, get, post, Error
 
 # Body Values
-@docs empty, string, multipart, stringData
+@docs Body, empty, string, multipart, Data, stringData
 
 # Arbitrary Requests
 @docs send, Request, Settings, defaultSettings
@@ -112,6 +112,9 @@ type alias Request =
     }
 
 
+{-| An opaque type representing the body of your HTTP message. With GET
+requests this is empty, but in other cases it may be a string or blob.
+-}
 type Body
     = Empty
     | BodyString String
@@ -153,6 +156,10 @@ blob _ =
   BodyBlob
 --}
 
+{-| Represents data that can be put in a multi-part body. Right now it only
+supports strings, but we will support blobs and files when we get an API for
+them in Elm.
+-}
 type Data
     = StringData String String
     | BlobData String (Maybe String) Blob
