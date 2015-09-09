@@ -3,7 +3,7 @@ module Http
     , url, uriEncode, uriDecode
     , Request
     , Body, empty, string, multipart
-    , Data, stringData, blobData
+    , Data, stringData
     , Settings, defaultSettings
     , Response, Value(..)
     , Error(..), RawError(..)
