@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "summary": "Basic foundation for HTTP communication",
     "repository": "http://github.com/evancz/elm-http.git",
     "license": "BSD3",
