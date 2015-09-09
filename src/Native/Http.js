@@ -88,7 +88,7 @@ Elm.Native.Http.make = function(localRuntime) {
 
 	function toResponse(req)
 	{
-		var tag = typeof req.response === 'string' ? 'Text' : 'Blob';
+		var tag = req.responseType === 'blob' ? 'Blob' : 'Text'
 		return {
 			_: {},
 			status: req.status,
