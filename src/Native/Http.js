@@ -88,14 +88,15 @@ Elm.Native.Http.make = function(localRuntime) {
 
 	function toResponse(req)
 	{
-		var tag = typeof req.response === 'string' ? 'Text' : 'Blob';
+		var tag = req.responseType === 'blob' ? 'Blob' : 'Text'
+		var response = tag === 'Blob' ? req.response : req.responseText;
 		return {
 			_: {},
 			status: req.status,
 			statusText: req.statusText,
 			headers: parseHeaders(req.getAllResponseHeaders()),
 			url: req.responseURL,
-			value: { ctor: tag, _0: req.response }
+			value: { ctor: tag, _0: response }
 		};
 	}
 
