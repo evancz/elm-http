@@ -427,14 +427,19 @@ fromJson decoder response =
 
 handleResponse : (String -> Task Error a) -> Response -> Task Error a
 handleResponse handle response =
-  case 200 <= response.status && response.status < 300 of
-    False ->
-        fail (BadResponse response.status response.statusText)
+  if 200 <= response.status && response.status < 300 then
 
-    True ->
-        case response.value of
-          Text str -> handle str
-          _ -> fail (UnexpectedPayload "Response body is a blob, expecting a string.")
+      case response.value of
+        Text str ->
+            handle str
+
+        _ ->
+            fail (UnexpectedPayload "Response body is a blob, expecting a string.")
+
+  else
+
+      fail (BadResponse response.status response.statusText)
+
 
 
 promoteError : RawError -> Error
