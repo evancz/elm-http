@@ -18,6 +18,9 @@ Elm.Native.Http.make = function(localRuntime) {
 	{
 		return Task.asyncFunction(function(callback) {
 			var req = new XMLHttpRequest();
+			if (settings.withCredentials) {
+                req.withCredentials = true;
+            }
 
 			// start
 			if (settings.onStart.ctor === 'Just')
