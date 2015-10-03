@@ -323,7 +323,7 @@ type Error
 configure things like timeouts and progress monitoring. The `Request` argument
 defines all the information that will actually be sent along to a server.
 
-    crossOriginGet : String -> String -> Task Error Response
+    crossOriginGet : String -> String -> Task RawError Response
     crossOriginGet origin url =
       send defaultSettings
         { verb = "GET"
