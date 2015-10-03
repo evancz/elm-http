@@ -18,9 +18,6 @@ Elm.Native.Http.make = function(localRuntime) {
 	{
 		return Task.asyncFunction(function(callback) {
 			var req = new XMLHttpRequest();
-			if (settings.withCredentials) {
-                req.withCredentials = true;
-            }
 
 			// start
 			if (settings.onStart.ctor === 'Just')
@@ -71,18 +68,24 @@ Elm.Native.Http.make = function(localRuntime) {
 			// set the timeout
 			req.timeout = settings.timeout;
 
+			// enable this withCredentials thing
+			req.withCredentials = settings.withCredentials;
+
 			// ask for a specific MIME type for the response
 			if (settings.desiredResponseType.ctor === 'Just')
 			{
 				req.overrideMimeType(settings.desiredResponseType._0);
 			}
-                    if(request.body.ctor === "BodyFormData")
-                    {
-                        req.send(request.body.formData)
-                    }
-                    else {
-                        req.send(request.body._0);
-                    }
+
+			// actuall send the request
+			if(request.body.ctor === "BodyFormData")
+			{
+				req.send(request.body.formData)
+			}
+			else
+			{
+				req.send(request.body._0);
+			}
 		});
 	}
 
