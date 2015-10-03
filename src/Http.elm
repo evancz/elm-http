@@ -382,8 +382,10 @@ get decoder url =
       fromJson decoder (send defaultSettings request)
 
 
-{-| Send a POST request to the given URL, carrying the given string as the body.
-You also specify how to decode the response.
+{-| Send a POST request to the given URL, carrying the given body. You also
+specify how to decode the response with [a JSON decoder][json].
+
+[json]: http://package.elm-lang.org/packages/elm-lang/core/latest/Json-Decode#Decoder
 
     import Json.Decode (list, string)
 
@@ -404,10 +406,12 @@ post decoder url body =
       fromJson decoder (send defaultSettings request)
 
 
-{-| Send a PUT request to the given URL, carrying the given string as the body.
-This works exactly like [`post`](#post) using the same default settings.
-Sometimes you need to put!
+{-| Send a PUT request to the given URL, carrying the given body. You also
+specify how to decode the response with [a JSON decoder][json].
 
+[json]: http://package.elm-lang.org/packages/elm-lang/core/latest/Json-Decode#Decoder
+
+This works exactly like [`post`](#post) using the same default settings.
 -}
 put : Json.Decoder value -> String -> Body -> Task Error value
 put decoder url body =
