@@ -1,5 +1,5 @@
 module Http
-    ( getString, get, post, put, send
+    ( getString, get, post, send
     , url, uriEncode, uriDecode
     , Request
     , Body, empty, string, multipart
@@ -15,7 +15,7 @@ module Http
 @docs url, uriEncode, uriDecode
 
 # Fetch Strings and JSON
-@docs getString, get, post, put, Error
+@docs getString, get, post, Error
 
 # Body Values
 @docs Body, empty, string, multipart, Data, stringData
@@ -398,25 +398,6 @@ post : Json.Decoder value -> String -> Body -> Task Error value
 post decoder url body =
   let request =
         { verb = "POST"
-        , headers = []
-        , url = url
-        , body = body
-        }
-  in
-      fromJson decoder (send defaultSettings request)
-
-
-{-| Send a PUT request to the given URL, carrying the given body. You also
-specify how to decode the response with [a JSON decoder][json].
-
-[json]: http://package.elm-lang.org/packages/elm-lang/core/latest/Json-Decode#Decoder
-
-This works exactly like [`post`](#post) using the same default settings.
--}
-put : Json.Decoder value -> String -> Body -> Task Error value
-put decoder url body =
-  let request =
-        { verb = "PUT"
         , headers = []
         , url = url
         , body = body
