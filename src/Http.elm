@@ -241,6 +241,7 @@ type alias Settings =
     , onStart = Nothing
     , onProgress = Nothing
     , desiredResponseType = Nothing
+    , withCredentials = False
     }
 -}
 defaultSettings : Settings
