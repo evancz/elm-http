@@ -1,14 +1,15 @@
-module Http
-    ( getString, get, post, send
-    , url, uriEncode, uriDecode
-    , Request
-    , Body, empty, string, multipart
-    , Data, stringData
-    , Settings, defaultSettings
-    , Response, Value(..)
-    , Error(..), RawError(..)
-    , fromJson
-    ) where
+module Http exposing
+  ( getString, get, post, send
+  , url, uriEncode, uriDecode
+  , Request
+  , Body, empty, string, multipart
+  , Data, stringData
+  , Settings, defaultSettings
+  , Response, Value(..)
+  , Error(..), RawError(..)
+  , fromJson
+  )
+
 {-|
 
 # Encoding and Decoding
