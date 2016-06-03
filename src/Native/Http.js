@@ -64,7 +64,7 @@ function send(settings, request)
 			req.overrideMimeType(settings.desiredResponseType._0);
 		}
 
-		// actuall send the request
+		// actually send the request
 		if(request.body.ctor === "BodyFormData")
 		{
 			req.send(request.body.formData)
