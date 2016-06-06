@@ -365,7 +365,7 @@ getString url =
 {-| Send a GET request to the given URL. You also specify how to decode the
 response.
 
-    import Json.Decode (list, string)
+    import Json.Decode exposing (list, string)
 
     hats : Task Error (List String)
     hats =
@@ -389,7 +389,7 @@ specify how to decode the response with [a JSON decoder][json].
 
 [json]: http://package.elm-lang.org/packages/elm-lang/core/latest/Json-Decode#Decoder
 
-    import Json.Decode (list, string)
+    import Json.Decode exposing (list, string)
 
     hats : Task Error (List String)
     hats =
