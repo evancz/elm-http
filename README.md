@@ -6,6 +6,11 @@ The `Http` module aims to cover some of the most common cases of requesting
 JSON data, but also have lower-level functions such that the API covers all
 of the underlying functionality.
 
+## Installation
+```sh
+elm package install evancz/elm-http
+```
+
 ## Example
 
 ```elm
